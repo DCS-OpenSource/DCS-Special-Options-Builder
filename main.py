@@ -1,10 +1,22 @@
 from Options.Options import Options
 from Objects import Checkbox, Label
-from Skins import CheckBoxSkin, HelpSkin
+from Skins import CheckBoxSkin, HelpSkin, StaticOptionsTitleSkin
 
 opts = Options("C:\\Users\\haydn\\Saved Games\\DCS\\Mods\\aircraft\\devAH1G\\Options")
 
 leftColumnX = 56
+
+opts.add(
+    Label(
+        optionName="AH1G",
+        x=leftColumnX,
+        y=60,
+        w=100,
+        text="AH-1G Cobra",
+        tooltip="",
+        skin=StaticOptionsTitleSkin
+    )
+)
 
 opts.add(
     Checkbox(
