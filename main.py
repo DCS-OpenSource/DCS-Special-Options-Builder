@@ -49,7 +49,17 @@ opts.add(
         text="Sunvisor Brightness",
         max=255, min=0, step=5,
         skin=HorzSliderSkinOptions
+    )
+)
 
+opts.add(
+    Label(
+        optionName="SunvisorBrightnessHelp",
+        x=leftColumnX,
+        y=160,
+        text="Adjust Sunvisor Brightness, Smaller Numbers are lighter",
+        tooltip="",
+        skin=HelpSkin
     )
 )
 
