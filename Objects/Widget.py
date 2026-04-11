@@ -23,8 +23,7 @@ class Widget:
 
         skin_name = self.skin.name if self.skin else "HelpSkin"
 
-        return f"""
-\t\t\t\t["{self.name}"] = {{
+        return f"""\t\t\t\t["{self.name}"] = {{
 \t\t\t\t\t["params"] = {{
 \t\t\t\t\t\t["bounds"] = {{
 \t\t\t\t\t\t\t["h"] = {self.h},

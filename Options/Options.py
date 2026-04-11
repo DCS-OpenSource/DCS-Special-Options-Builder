@@ -15,6 +15,7 @@ class Options:
         self.children = []
         self.skins = []
         self._skin_names = set()
+        self.db_entries = []
 
         self.prefix = """dialog = {
 \t["children"] = {
@@ -80,6 +81,9 @@ class Options:
                 self._skin_names.add(skin_class.name)
                 self.skins.append(skin_class())
 
+        if hasattr(element, "to_db"):
+            self.db_entries.append(element.to_db())
+
     def build(self):
         content = ""
 
@@ -95,11 +99,28 @@ class Options:
 
         content += self.suffix
 
-        file_path = os.path.join(self.output_path, self.filename)
+        dlg_path = os.path.join(self.output_path, self.filename)
 
-        print("WRITING TO:", file_path)
-
-        with open(file_path, "w", encoding="utf-8") as f:
+        with open(dlg_path, "w", encoding="utf-8") as f:
             f.write(content)
 
-        print(f"[Options] Built: {file_path}")
+        self.build_db()
+
+    def build_db(self):
+        content = """local DbOption  = require('Options.DbOption')
+local i18n	    = require('i18n')
+
+local _ = i18n.ptranslate
+
+return {
+"""
+
+        for entry in self.db_entries:
+            content += entry + "\n"
+
+        content += "}\n"
+
+        db_path = os.path.join(self.output_path, "optionsDb.lua")
+
+        with open(db_path, "w", encoding="utf-8") as f:
+            f.write(content)

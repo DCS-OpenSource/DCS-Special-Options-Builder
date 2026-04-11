@@ -23,11 +23,13 @@ class Checkbox:
         # Default skin fallback
         self.skin = skin
 
+    def to_db(self):
+        return f'\t{self.name.replace("Checkbox", "")}\t= DbOption.new():setValue({self.state}):checkbox(),'
+
     def __str__(self):
         skin_name = self.skin.name if self.skin else "CheckBoxSkin"
 
-        return f"""
-\t\t\t\t["{self.name}"] = {{
+        return f"""\t\t\t\t["{self.name}"] = {{
 \t\t\t\t\t["params"] = {{
 \t\t\t\t\t\t["bounds"] = {{
 \t\t\t\t\t\t\t["h"] = {self.h},

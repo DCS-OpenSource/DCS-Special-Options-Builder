@@ -9,6 +9,7 @@ class Slider:
         max: int = 100,
         min: int = 0,
         step: int = 1,
+        default: int = 0,
         text: str = "",
         tooltip: str = "",
         skin=None,
@@ -21,18 +22,27 @@ class Slider:
         self.max = max
         self.min = min
         self.step = step
+        self.default = default
         self.text = text
         self.tooltip = tooltip
 
         # Default skin fallback
         self.skin = skin
 
+    def to_db(self):
+        option_name = self.name.replace("Slider", "")
+        default_value = self.default
+
+        return (
+            f'\t{option_name}\t= DbOption.new():setValue({default_value})'
+            f':slider(DbOption.Range({self.min}, {self.max})),'
+        )
+
     def __str__(self):
         skin_name = self.skin.name if self.skin else "horzSliderSkin_options"
 
         # note the y value is adjusted to align the slider properly with the label
-        return f"""
-\t\t\t\t["{self.name}"] = {{
+        return f"""\t\t\t\t["{self.name}"] = {{
 \t\t\t\t\t["params"] = {{
 \t\t\t\t\t\t["bounds"] = {{
 \t\t\t\t\t\t\t["h"] = {self.h},
@@ -51,7 +61,7 @@ class Slider:
 \t\t\t\t\t\t["text"] = "{self.text}",
 \t\t\t\t\t\t["tooltip"] = "{self.tooltip}",
 \t\t\t\t\t\t["visible"] = true,
-\t\t\t\t\t\t["zindex"] = 0,
+\t\t\t\t\t\t["zindex"] = 1,
 \t\t\t\t\t}},
 \t\t\t\t\t["skin"] = {skin_name},
 \t\t\t\t\t["type"] = "HorzSlider",
