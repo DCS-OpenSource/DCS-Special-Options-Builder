@@ -2,62 +2,63 @@ class Slider:
     def __init__(
         self,
         optionName: str,
-        x: int,
+        x,
         y: int,
         w: int = 300,
         h: int = 18,
-        max: int = 100,
         min: int = 0,
+        max: int = 100,
         step: int = 1,
         default: int = 0,
         text: str = "",
         tooltip: str = "",
         skin=None,
+        depends_on: str = None,
+        callback: bool = False,
     ):
+        self.base_name = optionName
         self.name = f"{optionName}Slider"
+
         self.x = x
         self.y = y
         self.w = w
         self.h = h
-        self.max = max
+
         self.min = min
+        self.max = max
         self.step = step
         self.default = default
+
         self.text = text
         self.tooltip = tooltip
 
-        # Default skin fallback
         self.skin = skin
 
-    def to_db(self):
-        option_name = self.name.replace("Slider", "")
-        default_value = self.default
+        self.depends_on = depends_on
+        self.callback = callback
 
-        return (
-            f'\t{option_name}\t= DbOption.new():setValue({default_value})'
-            f':slider(DbOption.Range({self.min}, {self.max})),'
-        )
+    def _format_value(self, value):
+        if isinstance(value, str) and not value.startswith('"'):
+            return value
+        return value
 
     def __str__(self):
-        skin_name = self.skin.name if self.skin else "horzSliderSkin_options"
+        x_val = self._format_value(self.x)
+        skin_name = self.skin.name if self.skin else "HorzSliderSkinOptions"
 
-        # note the y value is adjusted to align the slider properly with the label
-        return f"""\t\t\t\t["{self.name}"] = {{
+        return f"""
+\t\t\t\t["{self.name}"] = {{
 \t\t\t\t\t["params"] = {{
 \t\t\t\t\t\t["bounds"] = {{
 \t\t\t\t\t\t\t["h"] = {self.h},
 \t\t\t\t\t\t\t["w"] = {self.w},
-\t\t\t\t\t\t\t["x"] = {self.x},
-\t\t\t\t\t\t\t["y"] = {self.y-6},
+\t\t\t\t\t\t\t["x"] = {x_val},
+\t\t\t\t\t\t\t["y"] = {self.y},
 \t\t\t\t\t\t}},
-\t\t\t\t\t\t["pagestep"] = 10,
-\t\t\t\t\t\t["range"] = {{
-\t\t\t\t\t\t\t["max"] = {self.max},
-\t\t\t\t\t\t\t["min"] = {self.min},
-\t\t\t\t\t\t}},
-\t\t\t\t\t\t["step"] = {self.step},
 \t\t\t\t\t\t["enabled"] = true,
-\t\t\t\t\t\t["tabOrder"] = 0,
+\t\t\t\t\t\t["min"] = {self.min},
+\t\t\t\t\t\t["max"] = {self.max},
+\t\t\t\t\t\t["step"] = {self.step},
 \t\t\t\t\t\t["text"] = "{self.text}",
 \t\t\t\t\t\t["tooltip"] = "{self.tooltip}",
 \t\t\t\t\t\t["visible"] = true,
@@ -67,3 +68,14 @@ class Slider:
 \t\t\t\t\t["type"] = "HorzSlider",
 \t\t\t\t}},
 """
+
+    def to_db(self):
+        base = (
+            f'{self.base_name}\t= DbOption.new():setValue({self.default})'
+            f':slider(DbOption.Range({self.min}, {self.max}))'
+        )
+
+        if self.callback:
+            base += ':callback(function(v) Update() end)'
+
+        return "\t" + base + ","

@@ -15,6 +15,8 @@ class Editbox:
         textWrapping: bool = False,
         readOnly: bool = False,
         skin=None,
+        depends_on: str = None,
+        callback: bool = False,
     ):
         self.base_name = optionName
         self.name = f"{optionName}EditBox"
@@ -36,6 +38,9 @@ class Editbox:
 
         self.skin = skin
 
+        self.depends_on = depends_on
+        self.callback = callback
+
     def _format_value(self, value):
         if isinstance(value, str) and not value.startswith('"'):
             return value
@@ -49,11 +54,12 @@ class Editbox:
         else:
             skin_block = """{
 \t\t\t\t\t["params"] = {
-\t\t\t\t\t\t["name"] = "editBoxSkin1",
+\t\t\t\t\t\t["name"] = "editBoxSkin2",
 \t\t\t\t\t},
 \t\t\t\t}"""
 
-        return f"""\t\t\t\t["{self.name}"] = {{
+        return f"""
+\t\t\t\t["{self.name}"] = {{
 \t\t\t\t\t["params"] = {{
 \t\t\t\t\t\t["bounds"] = {{
 \t\t\t\t\t\t\t["h"] = {self.h},
@@ -79,4 +85,9 @@ class Editbox:
 """
 
     def to_db(self):
-        return f'\t{self.base_name}\t= DbOption.new():setValue({self.default}):editbox(),'
+        base = f'{self.base_name}\t= DbOption.new():setValue({self.default}):editbox()'
+
+        if self.callback:
+            base += ':callback(function(v) Update() end)'
+
+        return "\t" + base + ","

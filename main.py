@@ -83,16 +83,15 @@ opts.add(
 
 opts.add(
     Objects.Checkbox(
-        optionName="POSITION_LIGHT_FLASH",
+        optionName="PLACEHOLDER",
         x=leftColumnX,
         y=newLine(),
         state=False,
-        text="Flash Position Lights on Ground Hot Start",
-        tooltip="When enabled, The position lights will flash by default, instead of being solid on when hot starting on the ground per procedures.",
+        text="Placeholder Option (INOP - TODO)",
+        tooltip="IDK What this should be, waiting for an idea",
         skin=Skins.CheckBoxSkin
     )
 )
-
 
 
 opts.add(
@@ -130,7 +129,8 @@ opts.add(
         state=False,
         text="Disable AI Gunner",
         tooltip="When enabled, the AI gunner not be present.",
-        skin=Skins.CheckBoxSkin
+        skin=Skins.CheckBoxSkin,
+        callback=True
     )
 )
 
@@ -142,7 +142,22 @@ opts.add(
         state=False,
         text="Mute AI Gunner",
         tooltip="When enabled, the AI gunner will be muted.",
-        skin=Skins.CheckBoxSkin
+        skin=Skins.CheckBoxSkin,
+        depends_on="DISABLE_AI_GUNNER",
+    )
+)
+
+opts.add(
+    Objects.Checkbox(
+        optionName="OVERRIDE_AI_GUNNER_COALITION_CHECKS",
+        x=leftColumnX,
+        y=newLine(),
+        state=False,
+        w=300,
+        text="Allow AI Gunner to Target Friendly Units",
+        tooltip="I made this for one guy who wanted to be able to shoot his own units with the AI gunner, because hes crazy like that <3",
+        skin=Skins.CheckBoxSkin,
+        depends_on="DISABLE_AI_GUNNER",
     )
 )
 
@@ -364,21 +379,10 @@ opts.add(
 
 opts.add(
     Objects.Label(
-        optionName="MULTICREW_PORT_HELP_1",
+        optionName="MULTICREW_PORT_HELP",
         x=leftColumnX,
         y=helpLine(),
         text="Change the multicrew port number if you have conflicts with other mods or software. Default is 25389.",
-        tooltip="",
-        skin=Skins.HelpSkin
-    )
-)
-
-opts.add(
-    Objects.Label(
-        optionName="MULTICREW_PORT_HELP_2",
-        x=leftColumnX,
-        y=helpLine(),
-        text="Do not change this unless you know what you are doing, for more information, see the manual.",
         tooltip="",
         skin=Skins.HelpSkin
     )

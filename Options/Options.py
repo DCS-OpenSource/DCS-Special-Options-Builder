@@ -15,7 +15,10 @@ class Options:
         self.children = []
         self.skins = []
         self._skin_names = set()
+
         self.db_entries = []
+        self.dependencies = []
+        self.callbacks = set()
 
         self.prefix = """dialog = {
 \t["children"] = {
@@ -74,7 +77,6 @@ class Options:
     def add(self, element):
         self.children.append(element)
 
-        # Auto-register skin if element has one
         if hasattr(element, "skin") and element.skin:
             skin_class = element.skin
             if skin_class.name not in self._skin_names:
@@ -84,14 +86,44 @@ class Options:
         if hasattr(element, "to_db"):
             self.db_entries.append(element.to_db())
 
+        if hasattr(element, "depends_on") and element.depends_on:
+            self.dependencies.append((element.depends_on, element))
+            self.callbacks.add(element.depends_on)
+
+    def build_update_function(self):
+        lines = []
+
+        for parent, child in self.dependencies:
+            parent_ui = f'config.{parent}Checkbox'
+            child_ui = f'config.{child.base_name}Checkbox'
+
+            lines.append(
+                f'\t{child_ui}:setEnabled(not {parent_ui}:getState())'
+            )
+
+        return (
+            "local function Update()\n"
+            "\tif config == nil then return end\n\n"
+            + "\n".join(lines)
+            + "\nend\n"
+        )
+
+    def build_on_show(self):
+        return """local function OnShowDialog(dialog)
+\tif dialog ~= config then
+\t\tconfig = dialog
+\tend
+
+\tUpdate()
+end
+"""
+
     def build(self):
         content = ""
 
-        # Write skins first
         for skin in self.skins:
             content += str(skin) + "\n"
 
-        # Then dialog
         content += self.prefix
 
         for child in self.children:
@@ -108,17 +140,29 @@ class Options:
 
     def build_db(self):
         content = """local DbOption  = require('Options.DbOption')
-local i18n	    = require('i18n')
+local i18n      = require('i18n')
 
 local _ = i18n.ptranslate
 
-return {
+local config = nil
+
 """
+
+        if self.dependencies:
+            content += self.build_update_function() + "\n"
+            content += self.build_on_show() + "\n"
+
+        content += "local result = {\n"
 
         for entry in self.db_entries:
             content += entry + "\n"
 
-        content += "}\n"
+        content += "}\n\n"
+
+        if self.dependencies:
+            content += "result.callbackOnShowDialog = OnShowDialog\n"
+
+        content += "return result\n"
 
         db_path = os.path.join(self.output_path, "optionsDb.lua")
 
