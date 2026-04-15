@@ -2,7 +2,7 @@ import Objects
 import Skins
 from Options.Options import Options
 
-opts = Options("C:\\Users\\haydn\\Saved Games\\DCS\\Mods\\aircraft\\devAH1G\\Options")
+opts = Options("C:\\Users\\username\\Saved Games\\DCS\\Mods\\aircraft\\planeName\\Options")
 
 headerX = 40
 leftColumnX = 56
