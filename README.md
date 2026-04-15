@@ -11,6 +11,9 @@ It uses Python classes to define UI elements and automatically builds both files
 
 ## Basic Usage
 
+Fork the repo, so you can commit your changes so you don't lose them
+Begin editing `main.py` as per the below documentation 
+
 ```python
 import Objects
 import Skins
