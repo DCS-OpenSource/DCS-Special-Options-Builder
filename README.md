@@ -12,14 +12,14 @@ It uses Python classes to define UI elements and automatically builds both files
 ## Basic Usage
 
 ```python
+import Objects
+import Skins
 from Options.Options import Options
-from Objects import Checkbox, Label, Slider, EditBox
-from Skins import *
 
 opts = Options("C:/Saved Games/DCS/Mods/aircraft/devAH1G/Options")
 
 opts.add(
-    Checkbox(
+    Objects.Checkbox(
         optionName="TEST_OPTION",
         x=56,
         y=100,
@@ -34,14 +34,33 @@ opts.build()
 
 ## Layout System
 
-Use a layout helper to manage Y positioning:
+Several helper functions and variables are provided to manage rows and columns
 
 ```python
-layout = Layout(startY=60)
+headerX = 40
+leftColumnX = 56
+rightColumnX = 450
 
-y = layout.newLine()
-y = layout.newSection()
-y = layout.helpLine()
+currentLineY = 60
+lineSpacing = 30
+sectionLineSpacing = 50
+helpLineSpacing = 20
+
+# Helper functions to manage line spacing
+def newLine():
+    global currentLineY
+    currentLineY += lineSpacing
+    return currentLineY
+
+def newSection():
+    global currentLineY
+    currentLineY += sectionLineSpacing
+    return currentLineY
+
+def helpLine():
+    global currentLineY
+    currentLineY += helpLineSpacing
+    return currentLineY
 ```
 
 ---
@@ -60,7 +79,7 @@ Checkbox(
     tooltip="Tooltip text",
     skin=CheckBoxSkin,
     depends_on="OTHER_OPTION",
-    callback=True
+    callback=True # if this checkbox should disable other options (link depends_on in other widgets to the name of this widget)
 )
 ```
 
@@ -74,13 +93,13 @@ Generates:
 ### Label
 
 ```python
-Label(
+Objects.Label(
     optionName="LABEL_NAME",
     x=56,
     y=120,
     text="Display text",
     tooltip="",
-    skin=HelpSkin
+    skin=Skins.HelpSkin
 )
 ```
 
@@ -93,7 +112,7 @@ Notes:
 ### Slider
 
 ```python
-Slider(
+Objects.Slider(
     optionName="SLIDER_NAME",
     x=56,
     y=140,
@@ -102,8 +121,8 @@ Slider(
     step=5,
     default=20,
     text="Slider label",
-    skin=HorzSliderSkinOptions,
-    depends_on="OPTION_NAME"
+    skin=Skins.HorzSliderSkinOptions,
+    depends_on="OPTION_NAME" # Match the name of callback=True widget so its disabled
 )
 ```
 
@@ -113,18 +132,36 @@ Generates:
 
 ---
 
+### Widget
+
+```python
+Objects.Widget(
+    optionName = "SLIDER_NAME", # Widget Name needs to match slider to show slider value
+    x=100,
+    y=140,
+    w=50,
+    text="0",
+    skin=Skins.StaticOptionsSliderValueSkin
+)
+```
+
+Generates:
+- UI widget that displays slider value
+
+---
+
 ### EditBox
 
 ```python
-EditBox(
+Objects.EditBox(
     optionName="PORT",
     x=56,
     y=160,
     default=25389,
     tooltip="Port number",
     numeric=True,
-    skin=None,
-    depends_on="OPTION_NAME"
+    skin=Skins.EditBoxSkinME,
+    depends_on="OPTION_NAME"  # Match the name of callback=True widget so its disabled
 )
 ```
 
@@ -152,7 +189,7 @@ class CheckBoxSkin:
 
 Use in widgets:
 ```python
-skin=CheckBoxSkin
+skin=Skins.CheckBoxSkin
 ```
 
 ---
@@ -208,12 +245,7 @@ config.CHILDCheckbox:setEnabled(not config.MASTERCheckbox:getState())
 2. Add widgets
 3. Use dependencies where needed
 4. Call `opts.build()`
-5. Reload DCS
+5. Run `main.py`
+6. Restart DCS
 
 ---
-
-## Future Extensions
-
-- Multi-condition dependencies
-- Auto layout columns
-- Localization helpers
