@@ -2,7 +2,7 @@ import Objects
 import Skins
 from Options.Options import Options
 
-opts = Options("C:\\Users\\username\\Saved Games\\DCS\\Mods\\aircraft\\planeName\\Options")
+opts = Options("C:\\Users\\haydn\\Saved Games\\DCS\\Mods\\aircraft\\devAH1G\\Options")
 
 headerX = 40
 leftColumnX = 56
@@ -136,12 +136,38 @@ opts.add(
 
 opts.add(
     Objects.Checkbox(
-        optionName="MUTE_AI_GUNNER",
+        optionName="DISABLE_AI_GUNNER_LOW_AMMO",
         x=rightColumnX,
         y=currentLineY,
         state=False,
+        text="Disable callouts for low rocket ammo",
+        tooltip="Stop AI Gunner calling out when you have low rocket ammo as you fire",
+        skin=Skins.CheckBoxSkin,
+        depends_on="DISABLE_AI_GUNNER",
+    )
+)
+
+opts.add(
+    Objects.Checkbox(
+        optionName="MUTE_AI_GUNNER",
+        x=leftColumnX,
+        y=newLine(),
+        state=False,
         text="Mute AI Gunner",
         tooltip="When enabled, the AI gunner will be muted.",
+        skin=Skins.CheckBoxSkin,
+        depends_on="DISABLE_AI_GUNNER",
+    )
+)
+
+opts.add(
+    Objects.Checkbox(
+        optionName="DISABLE_AI_GUNNER_EMPTY_AMMO",
+        x=rightColumnX,
+        y=currentLineY,
+        state=False,
+        text="Disable callouts for empty rocket ammo",
+        tooltip="Stop AI Gunner calling out when you have empty rocket ammo as you fire",
         skin=Skins.CheckBoxSkin,
         depends_on="DISABLE_AI_GUNNER",
     )
@@ -207,7 +233,7 @@ opts.add(
         x=leftColumnX + 120,
         y=currentLineY,
         w=50,
-        default=3,
+        default=1,
         numeric=True,
         tooltip="0-255 value for red tint in sunvisor",
         skin=Skins.EditBoxSkinME
@@ -232,7 +258,7 @@ opts.add(
         x=leftColumnX + 200,
         y=currentLineY,
         w=50,
-        default=3,
+        default=1,
         numeric=True,
         tooltip="0-255 value for green tint in sunvisor",
         skin=Skins.EditBoxSkinME
@@ -257,14 +283,23 @@ opts.add(
         x=leftColumnX + 280,
         y=currentLineY,
         w=50,
-        default=3,
+        default=1,
         numeric=True,
         tooltip="0-255 value for blue tint in sunvisor",
         skin=Skins.EditBoxSkinME
     )
 )
 
-
+opts.add(
+    Objects.Label(
+        optionName="VISOR_TINT_HELP",
+        x=leftColumnX,
+        y=helpLine(),
+        text="RGB Tint of the sunvisor, value range is 0-255, default 1",
+        tooltip="",
+        skin=Skins.HelpSkin
+    )
+)
 
 
 #endregion
@@ -286,7 +321,7 @@ opts.add(
         x=leftColumnX + 120,
         y=currentLineY,
         w=200,
-        default=15,
+        default=100,
         max=255, min=0, step=5,
         skin=Skins.HorzSliderSkinOptions
     )
@@ -308,7 +343,7 @@ opts.add(
         optionName="VISOR_BRIGHTNESS_HELP",
         x=leftColumnX,
         y=helpLine(),
-        text="Adjust Sunvisor Brightness, Smaller Numbers are lighter",
+        text="Adjust Sunvisor Darkness, 0 is transparent, 255 is opaque",
         tooltip="",
         skin=Skins.HelpSkin
     )
