@@ -69,15 +69,60 @@ opts.add(
     )
 )
 
+# opts.add(
+#     Objects.Checkbox(
+#         optionName="COCKPIT_SHAKE",
+#         x=rightColumnX,
+#         y=currentLineY,
+#         state=False,
+#         text="Disable Cockpit Shake (INOP - TODO)",
+#         tooltip="When enabled, the cockpit will not shake during flight.",
+#         skin=Skins.CheckBoxSkin
+#     )
+# )
+
 opts.add(
-    Objects.Checkbox(
-        optionName="COCKPIT_SHAKE",
+    Objects.Label(
+        optionName="COCKPIT_SHAKE_AMPLITUDE",
         x=rightColumnX,
         y=currentLineY,
-        state=False,
-        text="Disable Cockpit Shake (INOP - TODO)",
-        tooltip="When enabled, the cockpit will not shake during flight.",
-        skin=Skins.CheckBoxSkin
+        text="Cockpit Shake Amplitude:",
+        tooltip="",
+        skin=Skins.StaticOptionsCaptionSkin
+    )
+)
+
+opts.add(
+    Objects.Slider(
+        optionName = "COCKPIT_SHAKE_AMPLITUDE",
+        x=rightColumnX + 150,
+        y=currentLineY,
+        w=200,
+        default=1,
+        max=1, min=0, step=0.05,
+        skin=Skins.HorzSliderSkinOptions
+    )
+)
+
+opts.add(
+    Objects.Widget(
+        optionName = "COCKPIT_SHAKE_AMPLITUDE",
+        x=rightColumnX + 330,
+        y=currentLineY,
+        w=50,
+        text="0",
+        skin=Skins.StaticOptionsSliderValueSkin
+    )
+)
+
+opts.add(
+    Objects.Label(
+        optionName="COCKPIT_SHAKE_AMPLITUDE_HELP",
+        x=rightColumnX,
+        y=helpLine(),
+        text="Adjust the severity of the cockpit shaking effect. 0 Disables Cockpit Shake, 1 is the maximum",
+        tooltip="",
+        skin=Skins.HelpSkin
     )
 )
 
@@ -291,11 +336,34 @@ opts.add(
 )
 
 opts.add(
+    Objects.Checkbox(
+        optionName="SUNVISOR_ANIMATIONS",
+        x=rightColumnX,
+        y=currentLineY,
+        state=False,
+        w=300,
+        text="Disable Animated Sunvisors",
+        skin=Skins.CheckBoxSkin,
+    )
+)
+
+opts.add(
     Objects.Label(
         optionName="VISOR_TINT_HELP",
         x=leftColumnX,
         y=helpLine(),
         text="RGB Tint of the sunvisor, value range is 0-255, default 1",
+        tooltip="",
+        skin=Skins.HelpSkin
+    )
+)
+
+opts.add(
+    Objects.Label(
+        optionName="SUNVISOR_ANIMATIONS_HELP",
+        x=rightColumnX,
+        y=currentLineY,
+        text="Disable the external model sunvisor animations, Sunvisor will always be down.",
         tooltip="",
         skin=Skins.HelpSkin
     )

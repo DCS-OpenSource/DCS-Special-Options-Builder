@@ -54,7 +54,7 @@ class Checkbox:
 \t\t\t\t\t\t["text"] = "{self.text}",
 \t\t\t\t\t\t["tooltip"] = "{self.tooltip}",
 \t\t\t\t\t\t["visible"] = true,
-\t\t\t\t\t\t["zindex"] = 0,
+\t\t\t\t\t\t["zindex"] = 3,
 \t\t\t\t\t}},
 \t\t\t\t\t["skin"] = {skin_name},
 \t\t\t\t\t["type"] = "CheckBox",

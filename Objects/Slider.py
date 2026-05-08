@@ -53,7 +53,7 @@ class Slider:
 \t\t\t\t\t\t\t["h"] = {self.h},
 \t\t\t\t\t\t\t["w"] = {self.w},
 \t\t\t\t\t\t\t["x"] = {x_val},
-\t\t\t\t\t\t\t["y"] = {self.y},
+\t\t\t\t\t\t\t["y"] = {self.y - 5},
 \t\t\t\t\t\t}},
 \t\t\t\t\t\t["enabled"] = true,
 \t\t\t\t\t\t["min"] = {self.min},
