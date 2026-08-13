@@ -99,7 +99,7 @@ class ComboBox:
 \t\t\t\t\t\t["text"] = "{self._escape_lua_string(self.text)}",
 \t\t\t\t\t\t["tooltip"] = "{self._escape_lua_string(self.tooltip)}",
 \t\t\t\t\t\t["visible"] = true,
-\t\t\t\t\t\t["zindex"] = 0,
+\t\t\t\t\t\t["zindex"] = 3,
 \t\t\t\t\t}},
 \t\t\t\t\t["skin"] = {skin_block},
 \t\t\t\t\t["type"] = "ComboList",
