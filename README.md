@@ -221,8 +221,6 @@ You need the below in `mainpanel_init.lua` as well:
 dofile(LockOn_Options.common_script_path.."tools.lua")
 livery = get_livery_setting_from_plugin("AH1G","CPLocalList") --insert your plane name there
 ```
-I
-
 - `items` labels are automatically wrapped with DCS's `_()` translation helper
 - Both ComboBox types support `depends_on`
 - The controlling checkbox must use `callback=True`
