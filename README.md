@@ -174,6 +174,54 @@ Generates:
 
 ---
 
+### ComboBox
+
+```python
+Objects.ComboBox(
+    optionName="COMBO_NAME",
+    x=56,
+    y=180,
+    default=0,
+    items=[
+        ("FIRST OPTION", 0),
+        ("SECOND OPTION", 1),
+    ],
+    skin=Skins.ComboListSkinOptions,
+    depends_on="OPTION_NAME"  # Match the name of callback=True widget so its disabled
+)
+```
+
+Generates:
+
+- UI combo list
+- DB entry: `:combo({ DbOption.Item(...):Value(...) })`
+
+---
+
+### Cockpit Livery ComboBox
+
+```python
+Objects.ComboBox.cockpit_livery(
+    cockpit_folder="Cockpit_AH1G",
+    x=264,
+    y=362,
+    depends_on="OPTION_NAME"  # Match the name of callback=True widget so its disabled
+)
+```
+
+Generates:
+
+- UI combo list named `CPLocalListComboList`
+- DB entry: `result.CPLocalList = oms.getCPLocalList("Cockpit_AH1G")`
+
+Notes:
+
+- `items` labels are automatically wrapped with DCS's `_()` translation helper
+- Both ComboBox types support `depends_on`
+- The controlling checkbox must use `callback=True`
+
+---
+
 ## Skins
 
 Skins are defined as classes:
